@@ -6,6 +6,9 @@
 CAP_EMPTY_HEIGHT = 9;
 CAP_FULL_HEIGHT = 11;
 CAP_DIAMETER = 10.5;
+RADIUS = CAP_DIAMETER * 1.8;
+LIP_RADIUS = 1;
+
 
 module capsule() {
     tolerance = 0.5;
@@ -22,21 +25,40 @@ module cylinder_with_lip(h, r, lip_h, lip_r) {
 }
 
 module tray() {
-    radius = CAP_DIAMETER * 1.8;
     bottom_thickness = 2;
     capsules = 4;
     lip_height = 3;
     height = CAP_FULL_HEIGHT + bottom_thickness;
     
     difference() {
-        cylinder_with_lip(r=radius, h=height, lip_h=lip_height, lip_r=1);
+        cylinder_with_lip(r=RADIUS, h=height, lip_h=lip_height, lip_r=LIP_RADIUS);
   
         for(deg = [0 : 360 / capsules : 360]) {
             rotate(deg, [0, 0, 1])
-            translate([0, radius/2, bottom_thickness])
+            translate([0, RADIUS/2, bottom_thickness])
             capsule();
         }
     }
 }
 
-tray();
+
+module lid() {
+    lid_thickness = 1;
+    lid_lip = 1;
+
+    color("#00ff00") {
+        union() {
+            difference() {
+               cylinder(h=4, r=RADIUS+LIP_RADIUS*2);
+               cylinder(h=3, r=RADIUS+LIP_RADIUS);
+            }
+            translate([0, 0, 1]) cylinder(h=3, r=RADIUS-1);
+        }
+    }
+}
+
+//tray();
+//translate([0, 0, 20]) {
+    lid();
+//}
+
