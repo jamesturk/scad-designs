@@ -1,12 +1,14 @@
 /*
- capsule size:
-   height: 9mm without cap, 11mm with (+.1mm)
-   diameter: 10.5mm
+  capsule size:
+    height: 9mm without cap, 11mm with (+.1mm)
+    diameter: 10.5mm
+  tray size:
+    diameter: 55mm
 */
 CAP_EMPTY_HEIGHT = 9;
 CAP_FULL_HEIGHT = 11;
 CAP_DIAMETER = 10.5;
-RADIUS = CAP_DIAMETER * 1.8;
+RADIUS = 28;  // base on tray size / 2
 LIP_RADIUS = 1;
 
 
@@ -25,7 +27,7 @@ module cylinder_with_lip(h, r, lip_h, lip_r) {
 }
 
 module tray() {
-    bottom_thickness = 2;
+    bottom_thickness = 1;
     capsules = 4;
     lip_height = 3;
     height = CAP_FULL_HEIGHT + bottom_thickness;
@@ -57,8 +59,15 @@ module lid() {
     }
 }
 
-//tray();
-//translate([0, 0, 20]) {
+/* do the rendering based on provided mode */
+mode = 0;
+if (mode == 1) {
+  tray();
+} else if (mode == 2) {
+  lid();
+} else {
+  tray();
+  translate([0, 0, 20]) {
     lid();
-//}
-
+  }
+}
