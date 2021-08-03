@@ -32,6 +32,9 @@ module tray() {
     lip_height = 3;
     height = CAP_FULL_HEIGHT + bottom_thickness;
     
+    //union() {
+    
+    // tray 
     difference() {
         cylinder_with_lip(r=RADIUS, h=height, lip_h=lip_height, lip_r=LIP_RADIUS);
   
@@ -40,8 +43,19 @@ module tray() {
             translate([0, RADIUS/2, bottom_thickness])
             capsule();
         }
+        
     }
+    
+    // bottom foot
+    translate([0,0,-lip_height]) cylinder(h=lip_height-0.1, r=RADIUS-LIP_RADIUS);
+    
+    // label
+    //translate([0, 0, height]) rotate([0,0,0]) linear_extrude(0.1) {
+    //    text("I", halign="center", valign="center"); 
+    //}
+    //}
 }
+
 
 
 module lid() {
@@ -60,7 +74,7 @@ module lid() {
 }
 
 /* do the rendering based on provided mode */
-mode = 0;
+mode = 1;
 if (mode == 1) {
   tray();
 } else if (mode == 2) {
